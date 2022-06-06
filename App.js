@@ -1,33 +1,63 @@
 import React from 'react';
-import { StyleSheet , Image , View } from 'react-native';
-import {ApplicationProvider, Layout, Text, IconRegistry , RadioGroup , Radio, ButtonGroup } from '@ui-kitten/components';
+import { StyleSheet , Image ,TouchableWithoutFeedback , ScrollView , View} from 'react-native';
+import {ApplicationProvider, Layout, Text, IconRegistry , RadioGroup , Radio, Icon  , ViewPager , Button} from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as eva from '@eva-design/eva';
+function StarIcon(props){
 
-function Ttitle(props) {
-  return(
-    <Text category = 'h4' style =  {styles.title}>
-      {props.titolo}
-    </Text>
-  )
-}
+  const [secureTextEntry, setSecureTextEntry] = React.useState(false);
 
-function ChairImage(){
-  let image = 'https://www.arredocasastore.com/4279-thickbox_default/sedia-da-giardino-in-teak-maryland-.jpg';
-
-  let [courrentImage , setImage] = React.useState(image);
-
-  function ChangeImage(){
-    setImage('parola');
+  function Change () {
+    return(
+      setSecureTextEntry(!secureTextEntry)
+    );
   }
 
   return (
-    <Layout style = {styles.imageContiner} level = '3'>
-      <Image
-        style = {styles.image}
-        source={{uri: 'https://www.arredocasastore.com/4279-thickbox_default/sedia-da-giardino-in-teak-maryland-.jpg'}}
-      />
-    </Layout>
+    <TouchableWithoutFeedback onPress={Change}>
+      <Icon {...props} name= 'star' fill = {secureTextEntry ? 'black' : '#8F9BB3' } ></Icon>
+    </TouchableWithoutFeedback>
+  );
+}
+
+function Title(props) {
+  return(
+      <View style = {styles.titlecontainer}>
+        <Text category = 'h5' style =  {styles.title}>
+          {props.titolo}
+        </Text>
+        <Button accessoryLeft = {StarIcon} disabled = {true} style = {styles.button} appearance='ghost'></Button>    
+      </View>)
+}
+
+function ScroolImage(){
+  
+  
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  function ChangeImage(index){
+    setSelectedIndex(index);
+  }
+
+  return (
+    <ViewPager
+      selectedIndex={selectedIndex}
+      onSelect={ChangeImage}>
+      <Layout
+        style={styles.imageContiner}
+        level='2'>
+        <Image 
+          style = {styles.image}
+          source = {{uri: 'https://cdn.sklum.com/it/wk/1079151/sedia-in-velluto-glamm.jpg'}}/>
+      </Layout>
+      <Layout
+        style={styles.imageContiner}
+        level='2'>
+         <Image 
+          style = {styles.image}
+          source = {{uri: 'https://cdn.sklum.com/it/wk/1079163/sedia-in-velluto-glamm.jpg'}}/>
+      </Layout>
+    </ViewPager>  
   );
 }
 
@@ -56,7 +86,8 @@ function MyRadioGroup () {
 
   return(
     <>
-      <Text category='h6' style = {styles.text}>
+      <Layout level= '3'>
+      <Text category='h6' style = {{paddingLeft : 20 , paddingTop : 10}}>
         tua scelta : {choose}
       </Text>
 
@@ -69,6 +100,7 @@ function MyRadioGroup () {
         <Radio>vendi</Radio>
         <Radio>carello</Radio>
       </RadioGroup>
+      </Layout>
     </>
   )
 }
@@ -76,16 +108,16 @@ function MyRadioGroup () {
 function Description() {
   return(
     <>
-      <Text category='h4' style = {styles.text}>
-        Description
-      </Text>
 
       <Layout style = {styles.text} level = '3'>
-        <Text category = 'h6'>Colore:   <Text>marrone</Text></Text>
-        <Text category = 'h6'>Materiale:   <Text>legno</Text></Text>
-        <Text category = 'h6'>Dimensione Articolo:   <Text>57 x 48 x 89 cm</Text></Text>
-        <Text category = 'h6'>Peso massimo racomandato:   <Text>120 Chilogrammi</Text></Text>
-        <Text category = 'h6'>Peso articolo:   <Text>120 Chilogrammi</Text></Text>
+        <Text category='h6' style = {{paddingBottom : 10}}>
+          Description
+        </Text>
+        <Text category = 'label'>Colore:   <Text category= 'c1'>marrone</Text></Text>
+        <Text category = 'label'>Materiale:   <Text category= 'c1'>legno</Text></Text>
+        <Text category = 'label'>Dimensione Articolo:   <Text category= 'c1'>57 x 48 x 89 cm</Text></Text>
+        <Text category = 'label'>Peso massimo racomandato:   <Text category= 'c1' >120 Chilogrammi</Text></Text>
+        <Text category = 'label'>Peso articolo:   <Text category= 'c1'>120 Chilogrammi</Text></Text>
       </Layout>
     </>
   );
@@ -97,13 +129,14 @@ function App() {
     <>
     <IconRegistry icons={EvaIconsPack}></IconRegistry>
     <ApplicationProvider {...eva} theme = {eva.light}>
-      <Layout level = '4'>
-        <Ttitle titolo = "Product details"></Ttitle>
-        <ChairImage/>
+    <ScrollView>
+    <Layout level = '1'>
+        <Title titolo = "Product details"></Title>
+        <ScroolImage/>
         <MyRadioGroup></MyRadioGroup>
         <Description></Description>
-      </Layout>
-
+    </Layout>
+    </ScrollView>
     </ApplicationProvider>
     </>
   )};
@@ -113,12 +146,10 @@ export default App
 
 const styles = StyleSheet.create({
 
-  title: {
-    textAlign: 'center'
-  },
 
   imageContiner : {
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   image : {
@@ -129,10 +160,30 @@ const styles = StyleSheet.create({
   radio : {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    padding : 20,
+    paddingLeft : 20,
   },
 
   text : {
-    padding : 20,
+    paddingLeft: 20,
+    paddingTop: 10,
+    paddingBottom : 500,
+  },
+
+  icon : {
+    height : 30,
+    weight : 30,
   }
+  ,
+  titlecontainer : {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingTop : 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  button : {
+    backgroundColor: 'white',
+  }
+  
 });
