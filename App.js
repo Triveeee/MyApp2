@@ -7,6 +7,7 @@ import Description from './Description';
 import MyRadioGroup from './MyRadioGroup';
 import ScroolImage from './ScroolImage';
 import Title from './Title';
+import Comments from './CommentSection';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <ScroolImage/>
             <MyRadioGroup></MyRadioGroup>
             <Description></Description>
+            <Comments></Comments>r
         </Layout>
       </ScrollView>
     </ApplicationProvider>
