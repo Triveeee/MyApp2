@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     text : {
       paddingLeft: 20,
       paddingTop: 10,
-      paddingBottom : 500,
     },
   
     icon : {
@@ -42,6 +41,14 @@ const styles = StyleSheet.create({
   
     button : {
       backgroundColor: 'white',
+    } ,
+
+    input : {
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingTop: 10,
+      paddingBottom : 500,
+
     }
 });
 
